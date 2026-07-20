@@ -8,7 +8,56 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="app">
+    <div id="aplicacion">
+        <header id="encabezadoPrincipal">
+            <h1>Futbolle</h1>
+            <p>Adiviná el jugador de fútbol secreto</p>
+        </header>
+        <nav id="navegacionPrincipal">
+            <a href="contacto.html">Contacto</a>
+            <a id="enlaceGithub" href="https://github.com/LuciaMaximino/futbolle.git" target="_blank" rel="noopener">Ver código en GitHub</a>
+        </nav>
+        <section id="seccionBusqueda">
+            <input type="text" id="inputJugador" placeholder="Escribí el nombre de un jugador...">
+            <ul id="listaSugerencias" class="oculto">
+            </ul>
+        </section>
+        <section id="seccionEstado">
+            <p id="contadorIntentos">Intentos restantes: 8</p>
+            <p id="mostrarTiempo">Tiempo: 00:00</p>
+        </section>
+        <section id="seccionTablero">
+            <div id="encabezadoTablero">
+                <span>Jugador</span>
+                <span>Nacionalidad</span>
+                <span>Club</span>
+                <span>Posición</span>
+                <span>Edad</span>
+                <span>Overall</span>
+                <span>Altura</span>
+            </div>
+            <div id="cuerpoTablero">
+            </div>
+        </section>
+        <button type="button" id="botonReiniciar">Reiniciar partida</button>
+    </div>
+    <div id="modalGanar" class="modal oculto">
+        <div class="contenidoModal">
+            <p id="mensajeGanar"></p>
+            <button type="button" id="botonCerrarGanar">Cerrar</button>
+        </div>
+    </div>
+    <div id="modalPerder" class="modal oculto">
+        <div class="contenidoModal">
+            <p id="mensajePerder"></p>
+            <button type="button" id="botonCerrarPerder">Cerrar</button>
+        </div>
+    </div>
+    <div id="modalError" class="modal oculto">
+        <div class="contenidoModal">
+            <p id="mensajeError"></p>
+            <button type="button" id="botonCerrarError">Cerrar</button>
+        </div>
     </div>
     <script src="js/api.js"></script>
     <script src="js/dom.js"></script>
