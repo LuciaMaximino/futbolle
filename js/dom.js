@@ -14,6 +14,10 @@ var botonCerrarPerder = document.getElementById('botonCerrarPerder');
 var modalError = document.getElementById('modalError');
 var mensajeError = document.getElementById('mensajeError');
 var botonCerrarError = document.getElementById('botonCerrarError');
+var modalNombre = document.getElementById('modalNombre');
+var inputNombreJugador = document.getElementById('inputNombreJugador');
+var mensajeErrorNombre = document.getElementById('mensajeErrorNombre');
+var botonComenzar = document.getElementById('botonComenzar');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }
@@ -102,4 +106,9 @@ function agregarFilaTablero(jugador, comparacion) {
     agregarCeldaAtributo(fila, comparacion.overall);
     agregarCeldaAtributo(fila, comparacion.altura);
     cuerpoTablero.appendChild(fila);
+}
+function limpiarTableroVisual() {
+    while (cuerpoTablero.firstChild) {
+        cuerpoTablero.removeChild(cuerpoTablero.firstChild);
+    }
 }

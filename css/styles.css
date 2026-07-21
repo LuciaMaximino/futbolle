@@ -175,6 +175,18 @@ body {
   background-color: #3a3a55;
   color: #f2c94c;
 }
+#inputNombreJugador {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  background-color: #1e1e2f;
+  font-size: 1rem;
+  color: #f2f2f2;
+}
+#mensajeErrorNombre {
+  font-size: 0.85rem;
+  color: #f2c94c;
+}
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
     font-size: 1.8rem;
