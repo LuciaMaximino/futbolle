@@ -1,1 +1,16 @@
 'use strict';
+var inputJugador = document.getElementById('inputJugador');
+var listaSugerencias = document.getElementById('listaSugerencias');
+var contadorIntentos = document.getElementById('contadorIntentos');
+var mostrarTiempo = document.getElementById('mostrarTiempo');
+var cuerpoTablero = document.getElementById('cuerpoTablero');
+var botonReiniciar = document.getElementById('botonReiniciar');
+var modalGanar = document.getElementById('modalGanar');
+var mensajeGanar = document.getElementById('mensajeGanar');
+var botonCerrarGanar = document.getElementById('botonCerrarGanar');
+var modalPerder = document.getElementById('modalPerder');
+var mensajePerder = document.getElementById('mensajePerder');
+var botonCerrarPerder = document.getElementById('botonCerrarPerder');
+var modalError = document.getElementById('modalError');
+var mensajeError = document.getElementById('mensajeError');
+var botonCerrarError = document.getElementById('botonCerrarError');
