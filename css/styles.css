@@ -138,6 +138,43 @@ body {
   font-size: 1rem;
   color: #1e1e2f;
 }
+.modal.oculto {
+  display: none;
+}
+.filaTablero {
+  display: flex;
+  gap: 0.5rem;
+}
+.celdaAtributo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0.4rem 0;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.filaTablero span:first-child {
+  flex: 1;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+.pistaCorrecto {
+  background-color: #4caf50;
+}
+.pistaIncorrecto {
+  background-color: #c94040;
+}
+.pistaMayor {
+  background-color: #3a3a55;
+  color: #f2c94c;
+}
+.pistaMenor {
+  background-color: #3a3a55;
+  color: #f2c94c;
+}
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
     font-size: 1.8rem;
