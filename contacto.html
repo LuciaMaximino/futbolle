@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futbolle - Contacto</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="aplicacion">
+        <header id="encabezadoPrincipal">
+            <h1>Futbolle</h1>
+            <p>Contacto</p>
+        </header>
+        <nav id="navegacionPrincipal">
+            <a href="index.html">Volver al juego</a>
+            <a id="enlaceGithub" href="https://github.com/LuciaMaximino/futbolle" target="_blank" rel="noopener">Ver código en GitHub</a>
+        </nav>
+        <section id="seccionContacto">
+            <div id="grupoNombre">
+                <label for="inputNombreContacto">Nombre</label>
+                <input type="text" id="inputNombreContacto" placeholder="Tu nombre...">
+                <p id="errorNombreContacto" class="oculto"></p>
+            </div>
+            <div id="grupoMail">
+                <label for="inputMailContacto">Mail</label>
+                <input type="text" id="inputMailContacto" placeholder="tu@mail.com">
+                <p id="errorMailContacto" class="oculto"></p>
+            </div>
+            <div id="grupoMensaje">
+                <label for="inputMensajeContacto">Mensaje</label>
+                <textarea id="inputMensajeContacto" placeholder="Escribí tu mensaje..."></textarea>
+                <p id="errorMensajeContacto" class="oculto"></p>
+            </div>
+            <button type="button" id="botonEnviarContacto">Enviar</button>
+        </section>
+    </div>
+    <script src="js/contacto.js"></script>
+</body>
+</html>
