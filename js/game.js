@@ -89,6 +89,7 @@ function actualizarContadorIntentos() {
 function finalizarJuegoGanado() {
     juegoTerminado = true;
     detenerTimer();
+    reproducirSonidoVictoria();
     guardarPartidaEnHistorial('Ganó', nombresIntentados.length);
     mensajeGanar.textContent = 'Ganaste! Adivinaste al jugador en ' + nombresIntentados.length + ' intentos.';
     mostrarModal(modalGanar);
@@ -96,6 +97,7 @@ function finalizarJuegoGanado() {
 function finalizarJuegoPerdido() {
     juegoTerminado = true;
     detenerTimer();
+    reproducirSonidoDerrota();
     guardarPartidaEnHistorial('Perdió', nombresIntentados.length);
     mensajePerder.textContent = 'Perdiste. El jugador secreto era ' + jugadorSecreto.name + '.';
     mostrarModal(modalPerder);
@@ -119,6 +121,9 @@ function registrarIntento(jugador) {
     intentosRestantes = intentosRestantes - 1;
     comparacion = compararJugadores(jugador, jugadorSecreto);
     agregarFilaTablero(jugador, comparacion);
+    if (hayAciertoEnComparacion(comparacion)) {
+        reproducirSonidoAcierto();
+    }
     actualizarContadorIntentos();
     if (jugador.name === jugadorSecreto.name) {
         finalizarJuegoGanado();
@@ -251,3 +256,52 @@ function inicializarHistorial() {
     botonOrdenarIntentos.addEventListener('click', manejarClickOrdenarIntentos);
 }
 window.addEventListener('load', inicializarHistorial);
+var contextoAudio = null;
+function obtenerContextoAudio() {
+    if (contextoAudio === null) {
+        contextoAudio = new AudioContext();
+    }
+    return contextoAudio;
+}
+function reproducirTono(frecuencia, duracionMs) {
+    var contexto = obtenerContextoAudio();
+    var oscilador = contexto.createOscillator();
+    var ganancia = contexto.createGain();
+    oscilador.frequency.value = frecuencia;
+    oscilador.connect(ganancia);
+    ganancia.connect(contexto.destination);
+    ganancia.gain.setValueAtTime(0.2, contexto.currentTime);
+    ganancia.gain.exponentialRampToValueAtTime(0.001, contexto.currentTime + duracionMs / 1000);
+    oscilador.start();
+    oscilador.stop(contexto.currentTime + duracionMs / 1000);
+}
+function reproducirSonidoAcierto() {
+    reproducirTono(880, 150);
+}
+function reproducirSonidoVictoria() {
+    reproducirTono(660, 300);
+}
+function reproducirSonidoDerrota() {
+    reproducirTono(220, 400);
+}
+function hayAciertoEnComparacion(comparacion) {
+    if (comparacion.nacionalidad === 'correcto') {
+        return true;
+    }
+    if (comparacion.club === 'correcto') {
+        return true;
+    }
+    if (comparacion.posicion === 'correcto') {
+        return true;
+    }
+    if (comparacion.edad === 'correcto') {
+        return true;
+    }
+    if (comparacion.overall === 'correcto') {
+        return true;
+    }
+    if (comparacion.altura === 'correcto') {
+        return true;
+    }
+    return false;
+}
