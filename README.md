@@ -18,21 +18,23 @@ Juego para adivinar un jugador de fútbol secreto. Proyecto final individual de 
 - JavaScript (ES5)
 
 ## Estructura del proyecto
+```
 futbolle/
 ├── index.html
 ├── contacto.html
 ├── css/
-│ ├── reset.css
-│ └── styles.css
+│   ├── reset.css
+│   └── styles.css
 ├── js/
-│ ├── api.js
-│ ├── dom.js
-│ ├── game.js
-│ └── contacto.js
+│   ├── api.js
+│   ├── dom.js
+│   ├── game.js
+│   └── contacto.js
 └── img/
+```
 
 ## Endpoints utilizados
-Dataset de jugadores provisto por la cátedra:
+Dataset de jugadores dado por la cátedra:
 - `GET /api/players/search?q=&limit=8`: autocompletado de nombres.
 - `GET /api/players/random`: jugador secreto aleatorio.
 
