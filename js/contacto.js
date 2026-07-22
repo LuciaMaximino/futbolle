@@ -72,11 +72,21 @@ function manejarClickTema() {
     document.body.classList.toggle('temaClaro');
     if (document.body.classList.contains('temaClaro')) {
         botonTema.textContent = 'Modo oscuro';
+        localStorage.setItem('temaFutbolle', 'claro');
     } else {
         botonTema.textContent = 'Modo claro';
+        localStorage.setItem('temaFutbolle', 'oscuro');
+    }
+}
+function aplicarTemaGuardado() {
+    var temaGuardado = localStorage.getItem('temaFutbolle');
+    if (temaGuardado === 'claro') {
+        document.body.classList.add('temaClaro');
+        botonTema.textContent = 'Modo oscuro';
     }
 }
 function inicializarBotonTema() {
+    aplicarTemaGuardado();
     botonTema.addEventListener('click', manejarClickTema);
 }
 window.addEventListener('load', inicializarBotonTema);
