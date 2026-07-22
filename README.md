@@ -39,7 +39,7 @@ Dataset de jugadores dado por la cátedra:
 - `GET /api/players/random`: jugador secreto aleatorio.
 
 ## Demo
-Link del juego: (link de gitHub Pages)
+Link del juego: https://luciamaximino.github.io/futbolle/
 
 ## Alumna
 Lucía Maximino
