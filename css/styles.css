@@ -229,6 +229,40 @@ body {
   font-size: 1rem;
   color: #1e1e2f;
 }
+#navegacionPrincipal button {
+  padding: 0.5rem 1rem;
+  border: 0.0625rem solid #4caf50;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #f2f2f2;
+}
+body.temaClaro {
+  background-color: #f2f2f2;
+  color: #1e1e2f;
+}
+body.temaClaro #encabezadoPrincipal h1 {
+  color: #2e7d32;
+}
+body.temaClaro #navegacionPrincipal a,
+body.temaClaro #navegacionPrincipal button {
+  border-color: #2e7d32;
+  color: #1e1e2f;
+}
+body.temaClaro #inputJugador,
+body.temaClaro #listaSugerencias,
+body.temaClaro #inputNombreJugador,
+body.temaClaro #seccionContacto input,
+body.temaClaro #seccionContacto textarea {
+  background-color: #ffffff;
+  color: #1e1e2f;
+}
+body.temaClaro .contenidoModal {
+  background-color: #ffffff;
+}
+body.temaClaro .pistaMayor,
+body.temaClaro .pistaMenor {
+  background-color: #dcdcf0;
+}
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
     font-size: 1.8rem;

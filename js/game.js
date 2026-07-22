@@ -177,3 +177,15 @@ function inicializarPantallaNombre() {
     botonComenzar.addEventListener('click', manejarClickComenzar);
 }
 window.addEventListener('load', inicializarPantallaNombre);
+function manejarClickTema() {
+    document.body.classList.toggle('temaClaro');
+    if (document.body.classList.contains('temaClaro')) {
+        botonTema.textContent = 'Modo oscuro';
+    } else {
+        botonTema.textContent = 'Modo claro';
+    }
+}
+function inicializarBotonTema() {
+    botonTema.addEventListener('click', manejarClickTema);
+}
+window.addEventListener('load', inicializarBotonTema);

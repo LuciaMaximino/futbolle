@@ -18,6 +18,7 @@ var modalNombre = document.getElementById('modalNombre');
 var inputNombreJugador = document.getElementById('inputNombreJugador');
 var mensajeErrorNombre = document.getElementById('mensajeErrorNombre');
 var botonComenzar = document.getElementById('botonComenzar');
+var botonTema = document.getElementById('botonTema');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }

@@ -8,6 +8,7 @@ var errorNombreContacto = document.getElementById('errorNombreContacto');
 var errorMailContacto = document.getElementById('errorMailContacto');
 var errorMensajeContacto = document.getElementById('errorMensajeContacto');
 var botonEnviarContacto = document.getElementById('botonEnviarContacto');
+var botonTema = document.getElementById('botonTema');
 function validarNombreContacto(nombre) {
     return nombre.trim().length > 0 && expresionNombre.test(nombre.trim());
 }
@@ -67,3 +68,15 @@ function inicializarFormularioContacto() {
     botonEnviarContacto.addEventListener('click', manejarClickEnviarContacto);
 }
 window.addEventListener('load', inicializarFormularioContacto);
+function manejarClickTema() {
+    document.body.classList.toggle('temaClaro');
+    if (document.body.classList.contains('temaClaro')) {
+        botonTema.textContent = 'Modo oscuro';
+    } else {
+        botonTema.textContent = 'Modo claro';
+    }
+}
+function inicializarBotonTema() {
+    botonTema.addEventListener('click', manejarClickTema);
+}
+window.addEventListener('load', inicializarBotonTema);
