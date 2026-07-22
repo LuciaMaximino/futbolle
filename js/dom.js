@@ -25,6 +25,7 @@ var listaHistorial = document.getElementById('listaHistorial');
 var botonCerrarHistorial = document.getElementById('botonCerrarHistorial');
 var botonOrdenarFecha = document.getElementById('botonOrdenarFecha');
 var botonOrdenarIntentos = document.getElementById('botonOrdenarIntentos');
+var selectDificultad = document.getElementById('selectDificultad');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }
@@ -131,7 +132,7 @@ function formatearDuracion(segundos) {
 }
 function agregarFilaHistorial(partida) {
     var fila = document.createElement('div');
-    var textoFila = partida.jugador + ' - ' + partida.resultado + ' - ' + partida.intentos + ' intentos - ' + formatearDuracion(partida.duracion) + ' - ' + partida.fecha;
+    var textoFila = partida.jugador + ' - ' + partida.resultado + ' - ' + partida.intentos + ' intentos - ' + formatearDuracion(partida.duracion) + ' - ' + partida.fecha + ' - ' + partida.puntaje + ' pts';
     fila.className = 'filaHistorial';
     fila.textContent = textoFila;
     listaHistorial.appendChild(fila);

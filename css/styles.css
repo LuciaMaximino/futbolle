@@ -311,6 +311,24 @@ body.temaClaro #botonVerHistorial {
   border-color: #2e7d32;
   color: #1e1e2f;
 }
+#selectorDificultad {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.4rem;
+  text-align: left;
+}
+#selectDificultad {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #1e1e2f;
+  font-size: 1rem;
+  color: #f2f2f2;
+}
+body.temaClaro #selectDificultad {
+  background-color: #ffffff;
+  color: #1e1e2f;
+}
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
     font-size: 1.8rem;

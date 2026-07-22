@@ -6,6 +6,7 @@ var juegoTerminado = false;
 var segundosTranscurridos = 0;
 var idIntervaloTimer = null;
 var nombreJugadorHumano = '';
+var dificultadSeleccionada = 'facil';
 function reiniciarEstadoJuego() {
     jugadorSecreto = null;
     intentosRestantes = 8;
@@ -87,18 +88,19 @@ function actualizarContadorIntentos() {
     contadorIntentos.textContent = 'Intentos restantes: ' + intentosRestantes;
 }
 function finalizarJuegoGanado() {
+    var puntaje = calcularPuntaje(nombresIntentados.length);
     juegoTerminado = true;
     detenerTimer();
     reproducirSonidoVictoria();
-    guardarPartidaEnHistorial('Ganó', nombresIntentados.length);
-    mensajeGanar.textContent = 'Ganaste! Adivinaste al jugador en ' + nombresIntentados.length + ' intentos.';
+    guardarPartidaEnHistorial('Ganó', nombresIntentados.length, puntaje);
+    mensajeGanar.textContent = 'Ganaste! Adivinaste al jugador en ' + nombresIntentados.length + ' intentos. Puntaje: ' + puntaje + '.';
     mostrarModal(modalGanar);
 }
 function finalizarJuegoPerdido() {
     juegoTerminado = true;
     detenerTimer();
     reproducirSonidoDerrota();
-    guardarPartidaEnHistorial('Perdió', nombresIntentados.length);
+    guardarPartidaEnHistorial('Perdió', nombresIntentados.length, 0);
     mensajePerder.textContent = 'Perdiste. El jugador secreto era ' + jugadorSecreto.name + '.';
     mostrarModal(modalPerder);
 }
@@ -176,6 +178,7 @@ function manejarClickComenzar() {
         return;
     }
     nombreJugadorHumano = nombre;
+    dificultadSeleccionada = selectDificultad.value;
     mensajeErrorNombre.classList.add('oculto');
     ocultarModal(modalNombre);
     inicializarJuego();
@@ -213,7 +216,7 @@ function obtenerHistorialGuardado() {
     }
     return JSON.parse(historialTexto);
 }
-function guardarPartidaEnHistorial(resultado, cantidadIntentos) {
+function guardarPartidaEnHistorial(resultado, cantidadIntentos, puntaje) {
     var historial = obtenerHistorialGuardado();
     var duracionSegundos = segundosTranscurridos;
     var partida = {};
@@ -222,6 +225,7 @@ function guardarPartidaEnHistorial(resultado, cantidadIntentos) {
     partida.intentos = cantidadIntentos;
     partida.fecha = new Date().toLocaleString();
     partida.duracion = duracionSegundos;
+    partida.puntaje = puntaje;
     historial.push(partida);
     localStorage.setItem('historialFutbolle', JSON.stringify(historial));
 }
@@ -304,4 +308,32 @@ function hayAciertoEnComparacion(comparacion) {
         return true;
     }
     return false;
+}
+function obtenerPuntosBase() {
+    if (dificultadSeleccionada === 'facil') {
+        return 60;
+    }
+    if (dificultadSeleccionada === 'medio') {
+        return 80;
+    }
+    return 100;
+}
+function obtenerBonusTiempo() {
+    if (segundosTranscurridos < 60) {
+        return 20;
+    }
+    if (segundosTranscurridos < 120) {
+        return 10;
+    }
+    return 0;
+}
+function calcularPuntaje(cantidadIntentos) {
+    var puntosBase = obtenerPuntosBase();
+    var penalizacionIntentos = (cantidadIntentos - 1) * 10;
+    var bonusTiempo = obtenerBonusTiempo();
+    var puntaje = puntosBase - penalizacionIntentos + bonusTiempo;
+    if (puntaje < 10) {
+        return 10;
+    }
+    return puntaje;
 }
