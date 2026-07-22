@@ -89,12 +89,14 @@ function actualizarContadorIntentos() {
 function finalizarJuegoGanado() {
     juegoTerminado = true;
     detenerTimer();
+    guardarPartidaEnHistorial('Ganó', nombresIntentados.length);
     mensajeGanar.textContent = 'Ganaste! Adivinaste al jugador en ' + nombresIntentados.length + ' intentos.';
     mostrarModal(modalGanar);
 }
 function finalizarJuegoPerdido() {
     juegoTerminado = true;
     detenerTimer();
+    guardarPartidaEnHistorial('Perdió', nombresIntentados.length);
     mensajePerder.textContent = 'Perdiste. El jugador secreto era ' + jugadorSecreto.name + '.';
     mostrarModal(modalPerder);
 }
@@ -199,3 +201,53 @@ function inicializarBotonTema() {
     botonTema.addEventListener('click', manejarClickTema);
 }
 window.addEventListener('load', inicializarBotonTema);
+function obtenerHistorialGuardado() {
+    var historialTexto = localStorage.getItem('historialFutbolle');
+    if (historialTexto === null) {
+        return [];
+    }
+    return JSON.parse(historialTexto);
+}
+function guardarPartidaEnHistorial(resultado, cantidadIntentos) {
+    var historial = obtenerHistorialGuardado();
+    var duracionSegundos = segundosTranscurridos;
+    var partida = {};
+    partida.jugador = nombreJugadorHumano;
+    partida.resultado = resultado;
+    partida.intentos = cantidadIntentos;
+    partida.fecha = new Date().toLocaleString();
+    partida.duracion = duracionSegundos;
+    historial.push(partida);
+    localStorage.setItem('historialFutbolle', JSON.stringify(historial));
+}
+function manejarClickVerHistorial() {
+    var historial = obtenerHistorialGuardado();
+    renderizarHistorial(historial);
+    mostrarModal(modalHistorial);
+}
+function manejarClickCerrarHistorial() {
+    ocultarModal(modalHistorial);
+}
+function ordenarPorFecha(partidaA, partidaB) {
+    return new Date(partidaA.fecha) - new Date(partidaB.fecha);
+}
+function ordenarPorIntentos(partidaA, partidaB) {
+    return partidaA.intentos - partidaB.intentos;
+}
+function manejarClickOrdenarFecha() {
+    var historial = obtenerHistorialGuardado();
+    historial.sort(ordenarPorFecha);
+    renderizarHistorial(historial);
+}
+function manejarClickOrdenarIntentos() {
+    var historial = obtenerHistorialGuardado();
+    historial.sort(ordenarPorIntentos);
+    renderizarHistorial(historial);
+}
+function inicializarHistorial() {
+    botonVerHistorial.addEventListener('click', manejarClickVerHistorial);
+    botonCerrarHistorial.addEventListener('click', manejarClickCerrarHistorial);
+    botonOrdenarFecha.addEventListener('click', manejarClickOrdenarFecha);
+    botonOrdenarIntentos.addEventListener('click', manejarClickOrdenarIntentos);
+}
+window.addEventListener('load', inicializarHistorial);

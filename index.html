@@ -41,6 +41,7 @@
             </div>
         </section>
         <button type="button" id="botonReiniciar">Reiniciar partida</button>
+        <button type="button" id="botonVerHistorial">Ver historial</button>
     </div>
     <div id="modalNombre" class="modal">
         <div class="contenidoModal">
@@ -66,6 +67,18 @@
         <div class="contenidoModal">
             <p id="mensajeError"></p>
             <button type="button" id="botonCerrarError">Cerrar</button>
+        </div>
+    </div>
+    <div id="modalHistorial" class="modal oculto">
+        <div class="contenidoModal contenidoModalHistorial">
+            <h2>Historial de partidas</h2>
+            <div id="ordenamientoHistorial">
+                <button type="button" id="botonOrdenarFecha">Ordenar por fecha</button>
+                <button type="button" id="botonOrdenarIntentos">Ordenar por intentos</button>
+            </div>
+            <div id="listaHistorial">
+            </div>
+            <button type="button" id="botonCerrarHistorial">Cerrar</button>
         </div>
     </div>
     <script src="js/api.js"></script>

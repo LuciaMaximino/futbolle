@@ -19,6 +19,12 @@ var inputNombreJugador = document.getElementById('inputNombreJugador');
 var mensajeErrorNombre = document.getElementById('mensajeErrorNombre');
 var botonComenzar = document.getElementById('botonComenzar');
 var botonTema = document.getElementById('botonTema');
+var botonVerHistorial = document.getElementById('botonVerHistorial');
+var modalHistorial = document.getElementById('modalHistorial');
+var listaHistorial = document.getElementById('listaHistorial');
+var botonCerrarHistorial = document.getElementById('botonCerrarHistorial');
+var botonOrdenarFecha = document.getElementById('botonOrdenarFecha');
+var botonOrdenarIntentos = document.getElementById('botonOrdenarIntentos');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }
@@ -111,5 +117,33 @@ function agregarFilaTablero(jugador, comparacion) {
 function limpiarTableroVisual() {
     while (cuerpoTablero.firstChild) {
         cuerpoTablero.removeChild(cuerpoTablero.firstChild);
+    }
+}
+function limpiarListaHistorial() {
+    while (listaHistorial.firstChild) {
+        listaHistorial.removeChild(listaHistorial.firstChild);
+    }
+}
+function formatearDuracion(segundos) {
+    var minutos = Math.floor(segundos / 60);
+    var segundosRestantes = segundos % 60;
+    return minutos + 'm ' + segundosRestantes + 's';
+}
+function agregarFilaHistorial(partida) {
+    var fila = document.createElement('div');
+    var textoFila = partida.jugador + ' - ' + partida.resultado + ' - ' + partida.intentos + ' intentos - ' + formatearDuracion(partida.duracion) + ' - ' + partida.fecha;
+    fila.className = 'filaHistorial';
+    fila.textContent = textoFila;
+    listaHistorial.appendChild(fila);
+}
+function renderizarHistorial(historial) {
+    var i = 0;
+    limpiarListaHistorial();
+    if (historial.length === 0) {
+        listaHistorial.textContent = 'Todavía no jugaste ninguna partida.';
+        return;
+    }
+    for (i = 0; i < historial.length; i++) {
+        agregarFilaHistorial(historial[i]);
     }
 }
