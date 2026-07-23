@@ -39,13 +39,14 @@ futbolle/
 ├── index.html
 ├── contacto.html
 ├── css/
-│   ├── reset.css
-│   └── styles.css
-└── js/
-    ├── api.js
-    ├── dom.js
-    ├── game.js
-    └── contacto.js
+│ ├── reset.css
+│ └── styles.css
+├── js/
+│ ├── api.js
+│ ├── dom.js
+│ ├── game.js
+│ └── contacto.js
+└── img/
 ```
 
 ## Endpoints utilizados
