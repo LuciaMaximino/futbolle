@@ -28,6 +28,10 @@ var botonOrdenarIntentos = document.getElementById('botonOrdenarIntentos');
 var selectDificultad = document.getElementById('selectDificultad');
 var seccionPistaFacil = document.getElementById('seccionPistaFacil');
 var fotoJugadorSecreto = document.getElementById('fotoJugadorSecreto');
+var seccionPistaMedio = document.getElementById('seccionPistaMedio');
+var pistaAltura = document.getElementById('pistaAltura');
+var pistaEdad = document.getElementById('pistaEdad');
+var pistaOverall = document.getElementById('pistaOverall');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }

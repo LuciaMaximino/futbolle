@@ -19,6 +19,7 @@ function reiniciarVista() {
     actualizarContadorIntentos();
     actualizarMostrarTiempo();
     seccionPistaFacil.classList.add('oculto');
+    seccionPistaMedio.classList.add('oculto');
 }
 function inicializarJuego() {
     detenerTimer();
@@ -30,6 +31,7 @@ function manejarJugadorObtenido(jugador) {
     jugadorSecreto = jugador;
     console.log('Jugador secreto:', jugadorSecreto);
     mostrarPistaFacilSiCorresponde();
+    mostrarPistaMedioSiCorresponde();
 }
 function manejarErrorApi(error) {
     console.error('Error al consultar el servidor', error);
@@ -136,6 +138,9 @@ function registrarIntento(jugador) {
     }
     if (dificultadSeleccionada === 'facil') {
         actualizarNivelBlur(obtenerNivelBlur(nombresIntentados.length));
+    }
+    if (dificultadSeleccionada === 'medio') {
+        actualizarPistasMedio(nombresIntentados.length);
     }
     actualizarContadorIntentos();
     if (jugador.name === jugadorSecreto.name) {
@@ -363,4 +368,28 @@ function mostrarPistaFacilSiCorresponde() {
     fotoJugadorSecreto.src = jugadorSecreto.photo;
     actualizarNivelBlur(obtenerNivelBlur(0));
     seccionPistaFacil.classList.remove('oculto');
+}
+function reiniciarTextoPistasMedio() {
+    pistaAltura.textContent = 'Altura: ?';
+    pistaEdad.textContent = 'Edad: ?';
+    pistaOverall.textContent = 'Overall: ?';
+}
+function mostrarPistaMedioSiCorresponde() {
+    if (dificultadSeleccionada !== 'medio') {
+        seccionPistaMedio.classList.add('oculto');
+        return;
+    }
+    reiniciarTextoPistasMedio();
+    seccionPistaMedio.classList.remove('oculto');
+}
+function actualizarPistasMedio(cantidadIntentosUsados) {
+    if (cantidadIntentosUsados >= 2) {
+        pistaAltura.textContent = 'Altura: ' + jugadorSecreto.heightCm + ' cm';
+    }
+    if (cantidadIntentosUsados >= 4) {
+        pistaEdad.textContent = 'Edad: ' + jugadorSecreto.age;
+    }
+    if (cantidadIntentosUsados >= 6) {
+        pistaOverall.textContent = 'Overall: ' + jugadorSecreto.overall;
+    }
 }

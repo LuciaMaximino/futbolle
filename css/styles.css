@@ -148,6 +148,12 @@ body {
 .modal.oculto {
   display: none;
 }
+#seccionPistaFacil.oculto {
+  display: none;
+}
+#seccionPistaMedio.oculto {
+  display: none;
+}
 .filaTablero {
   display: flex;
   gap: 0.5rem;
@@ -361,6 +367,13 @@ body.temaClaro #selectDificultad {
 }
 .blurNivel7 {
   filter: blur(2.1rem);
+}
+#seccionPistaMedio {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  font-size: 0.95rem;
 }
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
