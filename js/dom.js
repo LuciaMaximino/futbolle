@@ -26,6 +26,8 @@ var botonCerrarHistorial = document.getElementById('botonCerrarHistorial');
 var botonOrdenarFecha = document.getElementById('botonOrdenarFecha');
 var botonOrdenarIntentos = document.getElementById('botonOrdenarIntentos');
 var selectDificultad = document.getElementById('selectDificultad');
+var seccionPistaFacil = document.getElementById('seccionPistaFacil');
+var fotoJugadorSecreto = document.getElementById('fotoJugadorSecreto');
 function mostrarModal(modal) {
     modal.classList.remove('oculto');
 }
@@ -148,3 +150,20 @@ function renderizarHistorial(historial) {
         agregarFilaHistorial(historial[i]);
     }
 }
+function quitarClasesBlur() {
+    var nivel = 0;
+    for (nivel = 0; nivel <= 7; nivel++) {
+        fotoJugadorSecreto.classList.remove('blurNivel' + nivel);
+    }
+}
+function actualizarNivelBlur(nivel) {
+    quitarClasesBlur();
+    fotoJugadorSecreto.classList.add('blurNivel' + nivel);
+}
+function manejarErrorCargaFoto() {
+    seccionPistaFacil.classList.add('oculto');
+}
+function inicializarManejoErrorFoto() {
+    fotoJugadorSecreto.addEventListener('error', manejarErrorCargaFoto);
+}
+window.addEventListener('load', inicializarManejoErrorFoto);

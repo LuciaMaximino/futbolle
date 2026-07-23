@@ -329,6 +329,39 @@ body.temaClaro #selectDificultad {
   background-color: #ffffff;
   color: #1e1e2f;
 }
+#seccionPistaFacil {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#fotoJugadorSecreto {
+  width: 8rem;
+  border-radius: 0.5rem;
+}
+.blurNivel0 {
+  filter: blur(0rem);
+}
+.blurNivel1 {
+  filter: blur(0.3rem);
+}
+.blurNivel2 {
+  filter: blur(0.6rem);
+}
+.blurNivel3 {
+  filter: blur(0.9rem);
+}
+.blurNivel4 {
+  filter: blur(1.2rem);
+}
+.blurNivel5 {
+  filter: blur(1.5rem);
+}
+.blurNivel6 {
+  filter: blur(1.8rem);
+}
+.blurNivel7 {
+  filter: blur(2.1rem);
+}
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
     font-size: 1.8rem;

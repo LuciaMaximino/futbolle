@@ -18,6 +18,7 @@ function reiniciarVista() {
     limpiarTableroVisual();
     actualizarContadorIntentos();
     actualizarMostrarTiempo();
+    seccionPistaFacil.classList.add('oculto');
 }
 function inicializarJuego() {
     detenerTimer();
@@ -28,6 +29,7 @@ function inicializarJuego() {
 function manejarJugadorObtenido(jugador) {
     jugadorSecreto = jugador;
     console.log('Jugador secreto:', jugadorSecreto);
+    mostrarPistaFacilSiCorresponde();
 }
 function manejarErrorApi(error) {
     console.error('Error al consultar el servidor', error);
@@ -92,6 +94,9 @@ function finalizarJuegoGanado() {
     juegoTerminado = true;
     detenerTimer();
     reproducirSonidoVictoria();
+    if (dificultadSeleccionada === 'facil') {
+        actualizarNivelBlur(0);
+    }
     guardarPartidaEnHistorial('Ganó', nombresIntentados.length, puntaje);
     mensajeGanar.textContent = 'Ganaste! Adivinaste al jugador en ' + nombresIntentados.length + ' intentos. Puntaje: ' + puntaje + '.';
     mostrarModal(modalGanar);
@@ -100,6 +105,9 @@ function finalizarJuegoPerdido() {
     juegoTerminado = true;
     detenerTimer();
     reproducirSonidoDerrota();
+    if (dificultadSeleccionada === 'facil') {
+        actualizarNivelBlur(0);
+    }
     guardarPartidaEnHistorial('Perdió', nombresIntentados.length, 0);
     mensajePerder.textContent = 'Perdiste. El jugador secreto era ' + jugadorSecreto.name + '.';
     mostrarModal(modalPerder);
@@ -125,6 +133,9 @@ function registrarIntento(jugador) {
     agregarFilaTablero(jugador, comparacion);
     if (hayAciertoEnComparacion(comparacion)) {
         reproducirSonidoAcierto();
+    }
+    if (dificultadSeleccionada === 'facil') {
+        actualizarNivelBlur(obtenerNivelBlur(nombresIntentados.length));
     }
     actualizarContadorIntentos();
     if (jugador.name === jugadorSecreto.name) {
@@ -336,4 +347,20 @@ function calcularPuntaje(cantidadIntentos) {
         return 10;
     }
     return puntaje;
+}
+function obtenerNivelBlur(cantidadIntentosUsados) {
+    var nivel = 7 - cantidadIntentosUsados;
+    if (nivel < 0) {
+        return 0;
+    }
+    return nivel;
+}
+function mostrarPistaFacilSiCorresponde() {
+    if (dificultadSeleccionada !== 'facil') {
+        seccionPistaFacil.classList.add('oculto');
+        return;
+    }
+    fotoJugadorSecreto.src = jugadorSecreto.photo;
+    actualizarNivelBlur(obtenerNivelBlur(0));
+    seccionPistaFacil.classList.remove('oculto');
 }
