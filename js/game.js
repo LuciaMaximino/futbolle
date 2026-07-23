@@ -7,12 +7,27 @@ var segundosTranscurridos = 0;
 var idIntervaloTimer = null;
 var nombreJugadorHumano = '';
 var dificultadSeleccionada = 'facil';
+var contextoAudio = null;
 function reiniciarEstadoJuego() {
     jugadorSecreto = null;
     intentosRestantes = 8;
     nombresIntentados = [];
     juegoTerminado = false;
     segundosTranscurridos = 0;
+}
+function actualizarContadorIntentos() {
+    contadorIntentos.textContent = 'Intentos restantes: ' + intentosRestantes;
+}
+function formatearNumeroDosDigitos(numero) {
+    if (numero < 10) {
+        return '0' + numero;
+    }
+    return String(numero);
+}
+function actualizarMostrarTiempo() {
+    var minutos = Math.floor(segundosTranscurridos / 60);
+    var segundos = segundosTranscurridos % 60;
+    mostrarTiempo.textContent = 'Tiempo: ' + formatearNumeroDosDigitos(minutos) + ':' + formatearNumeroDosDigitos(segundos);
 }
 function reiniciarVista() {
     limpiarTableroVisual();
@@ -21,48 +36,20 @@ function reiniciarVista() {
     seccionPistaFacil.classList.add('oculto');
     seccionPistaMedio.classList.add('oculto');
 }
-function inicializarJuego() {
-    detenerTimer();
-    reiniciarEstadoJuego();
-    reiniciarVista();
-    obtenerJugadorAleatorio(manejarJugadorObtenido, manejarErrorApi);
+function detenerTimer() {
+    clearInterval(idIntervaloTimer);
+    idIntervaloTimer = null;
 }
-function manejarJugadorObtenido(jugador) {
-    jugadorSecreto = jugador;
-    console.log('Jugador secreto:', jugadorSecreto);
-    mostrarPistaFacilSiCorresponde();
-    mostrarPistaMedioSiCorresponde();
+function incrementarTiempo() {
+    segundosTranscurridos = segundosTranscurridos + 1;
+    actualizarMostrarTiempo();
 }
-function manejarErrorApi(error) {
-    console.error('Error al consultar el servidor', error);
-    mensajeError.textContent = 'Hubo un problema al conectar con el servidor. Intentá de nuevo más tarde.';
-    mostrarModal(modalError);
-}
-function manejarEntradaBusqueda() {
-    var texto = inputJugador.value.trim();
-    if (texto.length < 2) {
-        ocultarListaSugerencias();
+function iniciarTimer() {
+    if (idIntervaloTimer !== null) {
         return;
     }
-    buscarJugadores(texto, mostrarSugerencias, manejarErrorApi);
+    idIntervaloTimer = setInterval(incrementarTiempo, 1000);
 }
-function seleccionarJugador(jugador) {
-    inputJugador.value = '';
-    ocultarListaSugerencias();
-    registrarIntento(jugador);
-}
-function manejarClickFueraBusqueda(evento) {
-    var clickDentroInput = evento.target === inputJugador;
-    var clickDentroLista = listaSugerencias.contains(evento.target);
-    if (!clickDentroInput && !clickDentroLista) {
-        ocultarListaSugerencias();
-    }
-}
-function inicializarBusqueda() {
-    inputJugador.addEventListener('input', manejarEntradaBusqueda);
-    document.addEventListener('click', manejarClickFueraBusqueda);
-}
-window.addEventListener('load', inicializarBusqueda);
 function compararIgualdad(valorIntento, valorSecreto) {
     if (valorIntento === valorSecreto) {
         return 'correcto';
@@ -88,8 +75,141 @@ function compararJugadores(intento, secreto) {
     resultado.altura = compararNumero(intento.heightCm, secreto.heightCm);
     return resultado;
 }
-function actualizarContadorIntentos() {
-    contadorIntentos.textContent = 'Intentos restantes: ' + intentosRestantes;
+function hayAciertoEnComparacion(comparacion) {
+    if (comparacion.nacionalidad === 'correcto') {
+        return true;
+    }
+    if (comparacion.club === 'correcto') {
+        return true;
+    }
+    if (comparacion.posicion === 'correcto') {
+        return true;
+    }
+    if (comparacion.edad === 'correcto') {
+        return true;
+    }
+    if (comparacion.overall === 'correcto') {
+        return true;
+    }
+    if (comparacion.altura === 'correcto') {
+        return true;
+    }
+    return false;
+}
+function obtenerContextoAudio() {
+    if (contextoAudio === null) {
+        contextoAudio = new AudioContext();
+    }
+    return contextoAudio;
+}
+function reproducirTono(frecuencia, duracionMs) {
+    var contexto = obtenerContextoAudio();
+    var oscilador = contexto.createOscillator();
+    var ganancia = contexto.createGain();
+    oscilador.frequency.value = frecuencia;
+    oscilador.connect(ganancia);
+    ganancia.connect(contexto.destination);
+    ganancia.gain.setValueAtTime(0.2, contexto.currentTime);
+    ganancia.gain.exponentialRampToValueAtTime(0.001, contexto.currentTime + duracionMs / 1000);
+    oscilador.start();
+    oscilador.stop(contexto.currentTime + duracionMs / 1000);
+}
+function reproducirSonidoAcierto() {
+    reproducirTono(880, 150);
+}
+function reproducirSonidoVictoria() {
+    reproducirTono(660, 300);
+}
+function reproducirSonidoDerrota() {
+    reproducirTono(220, 400);
+}
+function obtenerPuntosBase() {
+    if (dificultadSeleccionada === 'facil') {
+        return 60;
+    }
+    if (dificultadSeleccionada === 'medio') {
+        return 80;
+    }
+    return 100;
+}
+function obtenerBonusTiempo() {
+    if (segundosTranscurridos < 60) {
+        return 20;
+    }
+    if (segundosTranscurridos < 120) {
+        return 10;
+    }
+    return 0;
+}
+function calcularPuntaje(cantidadIntentos) {
+    var puntosBase = obtenerPuntosBase();
+    var penalizacionIntentos = (cantidadIntentos - 1) * 10;
+    var bonusTiempo = obtenerBonusTiempo();
+    var puntaje = puntosBase - penalizacionIntentos + bonusTiempo;
+    if (puntaje < 10) {
+        return 10;
+    }
+    return puntaje;
+}
+function obtenerHistorialGuardado() {
+    var historialTexto = localStorage.getItem('historialFutbolle');
+    if (historialTexto === null) {
+        return [];
+    }
+    return JSON.parse(historialTexto);
+}
+function guardarPartidaEnHistorial(resultado, cantidadIntentos, puntaje) {
+    var historial = obtenerHistorialGuardado();
+    var duracionSegundos = segundosTranscurridos;
+    var partida = {};
+    partida.jugador = nombreJugadorHumano;
+    partida.resultado = resultado;
+    partida.intentos = cantidadIntentos;
+    partida.fecha = new Date().toLocaleString();
+    partida.duracion = duracionSegundos;
+    partida.puntaje = puntaje;
+    historial.push(partida);
+    localStorage.setItem('historialFutbolle', JSON.stringify(historial));
+}
+function obtenerNivelBlur(cantidadIntentosUsados) {
+    var nivel = 7 - cantidadIntentosUsados;
+    if (nivel < 0) {
+        return 0;
+    }
+    return nivel;
+}
+function mostrarPistaFacilSiCorresponde() {
+    if (dificultadSeleccionada !== 'facil') {
+        seccionPistaFacil.classList.add('oculto');
+        return;
+    }
+    fotoJugadorSecreto.src = jugadorSecreto.photo;
+    actualizarNivelBlur(obtenerNivelBlur(0));
+    seccionPistaFacil.classList.remove('oculto');
+}
+function reiniciarTextoPistasMedio() {
+    pistaAltura.textContent = 'Altura: ?';
+    pistaEdad.textContent = 'Edad: ?';
+    pistaOverall.textContent = 'Overall: ?';
+}
+function mostrarPistaMedioSiCorresponde() {
+    if (dificultadSeleccionada !== 'medio') {
+        seccionPistaMedio.classList.add('oculto');
+        return;
+    }
+    reiniciarTextoPistasMedio();
+    seccionPistaMedio.classList.remove('oculto');
+}
+function actualizarPistasMedio(cantidadIntentosUsados) {
+    if (cantidadIntentosUsados >= 2) {
+        pistaAltura.textContent = 'Altura: ' + jugadorSecreto.heightCm + ' cm';
+    }
+    if (cantidadIntentosUsados >= 4) {
+        pistaEdad.textContent = 'Edad: ' + jugadorSecreto.age;
+    }
+    if (cantidadIntentosUsados >= 6) {
+        pistaOverall.textContent = 'Overall: ' + jugadorSecreto.overall;
+    }
 }
 function finalizarJuegoGanado() {
     var puntaje = calcularPuntaje(nombresIntentados.length);
@@ -151,38 +271,23 @@ function registrarIntento(jugador) {
         finalizarJuegoPerdido();
     }
 }
-function formatearNumeroDosDigitos(numero) {
-    if (numero < 10) {
-        return '0' + numero;
-    }
-    return String(numero);
+function manejarJugadorObtenido(jugador) {
+    jugadorSecreto = jugador;
+    console.log('Jugador secreto:', jugadorSecreto);
+    mostrarPistaFacilSiCorresponde();
+    mostrarPistaMedioSiCorresponde();
 }
-function actualizarMostrarTiempo() {
-    var minutos = Math.floor(segundosTranscurridos / 60);
-    var segundos = segundosTranscurridos % 60;
-    mostrarTiempo.textContent = 'Tiempo: ' + formatearNumeroDosDigitos(minutos) + ':' + formatearNumeroDosDigitos(segundos);
+function manejarErrorApi(error) {
+    console.error('Error al consultar el servidor', error);
+    mensajeError.textContent = 'Hubo un problema al conectar con el servidor. Intentá de nuevo más tarde.';
+    mostrarModal(modalError);
 }
-function incrementarTiempo() {
-    segundosTranscurridos = segundosTranscurridos + 1;
-    actualizarMostrarTiempo();
+function inicializarJuego() {
+    detenerTimer();
+    reiniciarEstadoJuego();
+    reiniciarVista();
+    obtenerJugadorAleatorio(manejarJugadorObtenido, manejarErrorApi);
 }
-function iniciarTimer() {
-    if (idIntervaloTimer !== null) {
-        return;
-    }
-    idIntervaloTimer = setInterval(incrementarTiempo, 1000);
-}
-function detenerTimer() {
-    clearInterval(idIntervaloTimer);
-    idIntervaloTimer = null;
-}
-function manejarClickReiniciar() {
-    inicializarJuego();
-}
-function inicializarBotonReiniciar() {
-    botonReiniciar.addEventListener('click', manejarClickReiniciar);
-}
-window.addEventListener('load', inicializarBotonReiniciar);
 function validarNombreJugador(nombre) {
     return nombre.trim().length >= 3;
 }
@@ -203,6 +308,38 @@ function inicializarPantallaNombre() {
     botonComenzar.addEventListener('click', manejarClickComenzar);
 }
 window.addEventListener('load', inicializarPantallaNombre);
+function manejarClickReiniciar() {
+    inicializarJuego();
+}
+function inicializarBotonReiniciar() {
+    botonReiniciar.addEventListener('click', manejarClickReiniciar);
+}
+window.addEventListener('load', inicializarBotonReiniciar);
+function manejarEntradaBusqueda() {
+    var texto = inputJugador.value.trim();
+    if (texto.length < 2) {
+        ocultarListaSugerencias();
+        return;
+    }
+    buscarJugadores(texto, mostrarSugerencias, manejarErrorApi);
+}
+function seleccionarJugador(jugador) {
+    inputJugador.value = '';
+    ocultarListaSugerencias();
+    registrarIntento(jugador);
+}
+function manejarClickFueraBusqueda(evento) {
+    var clickDentroInput = evento.target === inputJugador;
+    var clickDentroLista = listaSugerencias.contains(evento.target);
+    if (!clickDentroInput && !clickDentroLista) {
+        ocultarListaSugerencias();
+    }
+}
+function inicializarBusqueda() {
+    inputJugador.addEventListener('input', manejarEntradaBusqueda);
+    document.addEventListener('click', manejarClickFueraBusqueda);
+}
+window.addEventListener('load', inicializarBusqueda);
 function manejarClickTema() {
     document.body.classList.toggle('temaClaro');
     if (document.body.classList.contains('temaClaro')) {
@@ -225,26 +362,6 @@ function inicializarBotonTema() {
     botonTema.addEventListener('click', manejarClickTema);
 }
 window.addEventListener('load', inicializarBotonTema);
-function obtenerHistorialGuardado() {
-    var historialTexto = localStorage.getItem('historialFutbolle');
-    if (historialTexto === null) {
-        return [];
-    }
-    return JSON.parse(historialTexto);
-}
-function guardarPartidaEnHistorial(resultado, cantidadIntentos, puntaje) {
-    var historial = obtenerHistorialGuardado();
-    var duracionSegundos = segundosTranscurridos;
-    var partida = {};
-    partida.jugador = nombreJugadorHumano;
-    partida.resultado = resultado;
-    partida.intentos = cantidadIntentos;
-    partida.fecha = new Date().toLocaleString();
-    partida.duracion = duracionSegundos;
-    partida.puntaje = puntaje;
-    historial.push(partida);
-    localStorage.setItem('historialFutbolle', JSON.stringify(historial));
-}
 function manejarClickVerHistorial() {
     var historial = obtenerHistorialGuardado();
     renderizarHistorial(historial);
@@ -276,120 +393,3 @@ function inicializarHistorial() {
     botonOrdenarIntentos.addEventListener('click', manejarClickOrdenarIntentos);
 }
 window.addEventListener('load', inicializarHistorial);
-var contextoAudio = null;
-function obtenerContextoAudio() {
-    if (contextoAudio === null) {
-        contextoAudio = new AudioContext();
-    }
-    return contextoAudio;
-}
-function reproducirTono(frecuencia, duracionMs) {
-    var contexto = obtenerContextoAudio();
-    var oscilador = contexto.createOscillator();
-    var ganancia = contexto.createGain();
-    oscilador.frequency.value = frecuencia;
-    oscilador.connect(ganancia);
-    ganancia.connect(contexto.destination);
-    ganancia.gain.setValueAtTime(0.2, contexto.currentTime);
-    ganancia.gain.exponentialRampToValueAtTime(0.001, contexto.currentTime + duracionMs / 1000);
-    oscilador.start();
-    oscilador.stop(contexto.currentTime + duracionMs / 1000);
-}
-function reproducirSonidoAcierto() {
-    reproducirTono(880, 150);
-}
-function reproducirSonidoVictoria() {
-    reproducirTono(660, 300);
-}
-function reproducirSonidoDerrota() {
-    reproducirTono(220, 400);
-}
-function hayAciertoEnComparacion(comparacion) {
-    if (comparacion.nacionalidad === 'correcto') {
-        return true;
-    }
-    if (comparacion.club === 'correcto') {
-        return true;
-    }
-    if (comparacion.posicion === 'correcto') {
-        return true;
-    }
-    if (comparacion.edad === 'correcto') {
-        return true;
-    }
-    if (comparacion.overall === 'correcto') {
-        return true;
-    }
-    if (comparacion.altura === 'correcto') {
-        return true;
-    }
-    return false;
-}
-function obtenerPuntosBase() {
-    if (dificultadSeleccionada === 'facil') {
-        return 60;
-    }
-    if (dificultadSeleccionada === 'medio') {
-        return 80;
-    }
-    return 100;
-}
-function obtenerBonusTiempo() {
-    if (segundosTranscurridos < 60) {
-        return 20;
-    }
-    if (segundosTranscurridos < 120) {
-        return 10;
-    }
-    return 0;
-}
-function calcularPuntaje(cantidadIntentos) {
-    var puntosBase = obtenerPuntosBase();
-    var penalizacionIntentos = (cantidadIntentos - 1) * 10;
-    var bonusTiempo = obtenerBonusTiempo();
-    var puntaje = puntosBase - penalizacionIntentos + bonusTiempo;
-    if (puntaje < 10) {
-        return 10;
-    }
-    return puntaje;
-}
-function obtenerNivelBlur(cantidadIntentosUsados) {
-    var nivel = 7 - cantidadIntentosUsados;
-    if (nivel < 0) {
-        return 0;
-    }
-    return nivel;
-}
-function mostrarPistaFacilSiCorresponde() {
-    if (dificultadSeleccionada !== 'facil') {
-        seccionPistaFacil.classList.add('oculto');
-        return;
-    }
-    fotoJugadorSecreto.src = jugadorSecreto.photo;
-    actualizarNivelBlur(obtenerNivelBlur(0));
-    seccionPistaFacil.classList.remove('oculto');
-}
-function reiniciarTextoPistasMedio() {
-    pistaAltura.textContent = 'Altura: ?';
-    pistaEdad.textContent = 'Edad: ?';
-    pistaOverall.textContent = 'Overall: ?';
-}
-function mostrarPistaMedioSiCorresponde() {
-    if (dificultadSeleccionada !== 'medio') {
-        seccionPistaMedio.classList.add('oculto');
-        return;
-    }
-    reiniciarTextoPistasMedio();
-    seccionPistaMedio.classList.remove('oculto');
-}
-function actualizarPistasMedio(cantidadIntentosUsados) {
-    if (cantidadIntentosUsados >= 2) {
-        pistaAltura.textContent = 'Altura: ' + jugadorSecreto.heightCm + ' cm';
-    }
-    if (cantidadIntentosUsados >= 4) {
-        pistaEdad.textContent = 'Edad: ' + jugadorSecreto.age;
-    }
-    if (cantidadIntentosUsados >= 6) {
-        pistaOverall.textContent = 'Overall: ' + jugadorSecreto.overall;
-    }
-}

@@ -38,11 +38,6 @@ function mostrarModal(modal) {
 function ocultarModal(modal) {
     modal.classList.add('oculto');
 }
-function inicializarBotonesModales() {
-    botonCerrarGanar.addEventListener('click', cerrarModalGanar);
-    botonCerrarPerder.addEventListener('click', cerrarModalPerder);
-    botonCerrarError.addEventListener('click', cerrarModalError);
-}
 function cerrarModalGanar() {
     ocultarModal(modalGanar);
 }
@@ -52,7 +47,34 @@ function cerrarModalPerder() {
 function cerrarModalError() {
     ocultarModal(modalError);
 }
+function inicializarBotonesModales() {
+    botonCerrarGanar.addEventListener('click', cerrarModalGanar);
+    botonCerrarPerder.addEventListener('click', cerrarModalPerder);
+    botonCerrarError.addEventListener('click', cerrarModalError);
+}
 window.addEventListener('load', inicializarBotonesModales);
+function limpiarTableroVisual() {
+    while (cuerpoTablero.firstChild) {
+        cuerpoTablero.removeChild(cuerpoTablero.firstChild);
+    }
+}
+function limpiarListaHistorial() {
+    while (listaHistorial.firstChild) {
+        listaHistorial.removeChild(listaHistorial.firstChild);
+    }
+}
+function formatearDuracion(segundos) {
+    var minutos = Math.floor(segundos / 60);
+    var segundosRestantes = segundos % 60;
+    return minutos + 'm ' + segundosRestantes + 's';
+}
+function agregarFilaHistorial(partida) {
+    var fila = document.createElement('div');
+    var textoFila = partida.jugador + ' - ' + partida.resultado + ' - ' + partida.intentos + ' intentos - ' + formatearDuracion(partida.duracion) + ' - ' + partida.fecha + ' - ' + partida.puntaje + ' pts';
+    fila.className = 'filaHistorial';
+    fila.textContent = textoFila;
+    listaHistorial.appendChild(fila);
+}
 function limpiarListaSugerencias() {
     while (listaSugerencias.firstChild) {
         listaSugerencias.removeChild(listaSugerencias.firstChild);
@@ -61,6 +83,18 @@ function limpiarListaSugerencias() {
 function ocultarListaSugerencias() {
     limpiarListaSugerencias();
     listaSugerencias.classList.add('oculto');
+}
+function crearManejadorSeleccion(jugador) {
+    return function () {
+        seleccionarJugador(jugador);
+    };
+}
+function agregarItemSugerencia(jugador) {
+    var item = document.createElement('li');
+    var manejarClick = crearManejadorSeleccion(jugador);
+    item.textContent = jugador.name;
+    item.addEventListener('click', manejarClick);
+    listaSugerencias.appendChild(item);
 }
 function mostrarSugerencias(jugadores) {
     limpiarListaSugerencias();
@@ -72,18 +106,6 @@ function mostrarSugerencias(jugadores) {
         agregarItemSugerencia(jugadores[i]);
     }
     listaSugerencias.classList.remove('oculto');
-}
-function agregarItemSugerencia(jugador) {
-    var item = document.createElement('li');
-    var manejarClick = crearManejadorSeleccion(jugador);
-    item.textContent = jugador.name;
-    item.addEventListener('click', manejarClick);
-    listaSugerencias.appendChild(item);
-}
-function crearManejadorSeleccion(jugador) {
-    return function () {
-        seleccionarJugador(jugador);
-    };
 }
 function capitalizar(texto) {
     return texto.charAt(0).toUpperCase() + texto.slice(1);
@@ -121,28 +143,7 @@ function agregarFilaTablero(jugador, comparacion) {
     agregarCeldaAtributo(fila, comparacion.altura);
     cuerpoTablero.appendChild(fila);
 }
-function limpiarTableroVisual() {
-    while (cuerpoTablero.firstChild) {
-        cuerpoTablero.removeChild(cuerpoTablero.firstChild);
-    }
-}
-function limpiarListaHistorial() {
-    while (listaHistorial.firstChild) {
-        listaHistorial.removeChild(listaHistorial.firstChild);
-    }
-}
-function formatearDuracion(segundos) {
-    var minutos = Math.floor(segundos / 60);
-    var segundosRestantes = segundos % 60;
-    return minutos + 'm ' + segundosRestantes + 's';
-}
-function agregarFilaHistorial(partida) {
-    var fila = document.createElement('div');
-    var textoFila = partida.jugador + ' - ' + partida.resultado + ' - ' + partida.intentos + ' intentos - ' + formatearDuracion(partida.duracion) + ' - ' + partida.fecha + ' - ' + partida.puntaje + ' pts';
-    fila.className = 'filaHistorial';
-    fila.textContent = textoFila;
-    listaHistorial.appendChild(fila);
-}
+
 function renderizarHistorial(historial) {
     var i = 0;
     limpiarListaHistorial();

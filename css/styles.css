@@ -9,6 +9,95 @@ body {
 .oculto {
   display: none;
 }
+.blurNivel0 {
+  filter: blur(0rem);
+}
+.blurNivel1 {
+  filter: blur(0.3rem);
+}
+.blurNivel2 {
+  filter: blur(0.6rem);
+}
+.blurNivel3 {
+  filter: blur(0.9rem);
+}
+.blurNivel4 {
+  filter: blur(1.2rem);
+}
+.blurNivel5 {
+  filter: blur(1.5rem);
+}
+.blurNivel6 {
+  filter: blur(1.8rem);
+}
+.blurNivel7 {
+  filter: blur(2.1rem);
+}
+.filaTablero {
+  display: flex;
+  gap: 0.5rem;
+}
+.celdaAtributo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0.4rem 0;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.pistaCorrecto {
+  background-color: #4caf50;
+}
+.pistaIncorrecto {
+  background-color: #c94040;
+}
+.pistaMayor {
+  background-color: #3a3a55;
+  color: #f2c94c;
+}
+.pistaMenor {
+  background-color: #3a3a55;
+  color: #f2c94c;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.contenidoModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+  max-width: 25rem;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  background-color: #2a2a40;
+  text-align: center;
+}
+.contenidoModalHistorial {
+  max-width: 40rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.filaHistorial {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  background-color: #1e1e2f;
+  font-size: 0.85rem;
+}
 #aplicacion {
   display: flex;
   flex-direction: column;
@@ -25,20 +114,10 @@ body {
   gap: 0.5rem;
   text-align: center;
 }
-#encabezadoPrincipal h1 {
-  font-size: 2.5rem;
-  color: #4caf50;
-}
 #navegacionPrincipal {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-}
-#navegacionPrincipal a {
-  padding: 0.5rem 1rem;
-  border: 0.0625rem solid #4caf50;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
 }
 #seccionBusqueda {
   position: relative;
@@ -66,18 +145,27 @@ body {
   border-radius: 0.5rem;
   background-color: #2a2a40;
 }
-#listaSugerencias li {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-#listaSugerencias li:hover {
-  background-color: #3a3a55;
-}
 #seccionEstado {
   display: flex;
   justify-content: space-between;
   width: 100%;
   font-size: 1rem;
+}
+#seccionPistaFacil {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#fotoJugadorSecreto {
+  width: 8rem;
+  border-radius: 0.5rem;
+}
+#seccionPistaMedio {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  font-size: 0.95rem;
 }
 #seccionTablero {
   display: flex;
@@ -91,9 +179,6 @@ body {
   font-size: 0.85rem;
   font-weight: bold;
   text-align: center;
-}
-#encabezadoTablero span {
-  flex: 1;
 }
 #cuerpoTablero {
   display: flex;
@@ -114,28 +199,100 @@ body {
   font-size: 1rem;
   color: #f2f2f2;
 }
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#inputNombreJugador {
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  background-color: #1e1e2f;
+  font-size: 1rem;
+  color: #f2f2f2;
 }
-.contenidoModal {
+#mensajeErrorNombre {
+  font-size: 0.85rem;
+  color: #f2c94c;
+}
+#selectorDificultad {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
+  gap: 0.4rem;
+  text-align: left;
+}
+#selectDificultad {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #1e1e2f;
+  font-size: 1rem;
+  color: #f2f2f2;
+}
+#ordenamientoHistorial {
+  display: flex;
   gap: 1rem;
-  width: 90%;
-  max-width: 25rem;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  background-color: #2a2a40;
+}
+#listaHistorial {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+}
+#seccionContacto {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+#grupoNombre,
+#grupoMail,
+#grupoMensaje {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+#errorNombreContacto,
+#errorMailContacto,
+#errorMensajeContacto {
+  font-size: 0.85rem;
+  color: #f2c94c;
+}
+#botonEnviarContacto {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #4caf50;
+  align-self: flex-start;
+  font-size: 1rem;
+  color: #1e1e2f;
+}
+#encabezadoPrincipal h1 {
+  font-size: 2.5rem;
+  color: #4caf50;
+}
+#navegacionPrincipal a {
+  padding: 0.5rem 1rem;
+  border: 0.0625rem solid #4caf50;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+#navegacionPrincipal button {
+  padding: 0.5rem 1rem;
+  border: 0.0625rem solid #4caf50;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #f2f2f2;
+}
+#listaSugerencias li {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+#listaSugerencias li:hover {
+  background-color: #3a3a55;
+}
+#encabezadoTablero span {
+  flex: 1;
+}
+.filaTablero span:first-child {
+  flex: 1;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
   text-align: center;
 }
 .contenidoModal button {
@@ -154,64 +311,12 @@ body {
 #seccionPistaMedio.oculto {
   display: none;
 }
-.filaTablero {
-  display: flex;
-  gap: 0.5rem;
-}
-.celdaAtributo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  padding: 0.4rem 0;
-  border-radius: 0.4rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-.filaTablero span:first-child {
-  flex: 1;
-  padding: 0.4rem 0;
-  font-size: 0.85rem;
-  text-align: center;
-}
-.pistaCorrecto {
-  background-color: #4caf50;
-}
-.pistaIncorrecto {
-  background-color: #c94040;
-}
-.pistaMayor {
-  background-color: #3a3a55;
-  color: #f2c94c;
-}
-.pistaMenor {
-  background-color: #3a3a55;
-  color: #f2c94c;
-}
-#inputNombreJugador {
-  width: 100%;
-  padding: 0.6rem 0.8rem;
+#ordenamientoHistorial button {
+  padding: 0.4rem 0.8rem;
+  border: 0.0625rem solid #4caf50;
   border-radius: 0.5rem;
-  background-color: #1e1e2f;
-  font-size: 1rem;
-  color: #f2f2f2;
-}
-#mensajeErrorNombre {
   font-size: 0.85rem;
-  color: #f2c94c;
-}
-#seccionContacto {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 1rem;
-}
-#grupoNombre,
-#grupoMail,
-#grupoMensaje {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  color: #1e1e2f;
 }
 #seccionContacto label {
   font-size: 0.9rem;
@@ -227,27 +332,6 @@ body {
 #seccionContacto textarea {
   min-height: 8rem;
   resize: vertical;
-}
-#errorNombreContacto,
-#errorMailContacto,
-#errorMensajeContacto {
-  font-size: 0.85rem;
-  color: #f2c94c;
-}
-#botonEnviarContacto {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  background-color: #4caf50;
-  align-self: flex-start;
-  font-size: 1rem;
-  color: #1e1e2f;
-}
-#navegacionPrincipal button {
-  padding: 0.5rem 1rem;
-  border: 0.0625rem solid #4caf50;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  color: #f2f2f2;
 }
 body.temaClaro {
   background-color: #f2f2f2;
@@ -269,42 +353,16 @@ body.temaClaro #seccionContacto textarea {
   background-color: #ffffff;
   color: #1e1e2f;
 }
+body.temaClaro #selectDificultad {
+  background-color: #ffffff;
+  color: #1e1e2f;
+}
 body.temaClaro .contenidoModal {
   background-color: #ffffff;
 }
 body.temaClaro .pistaMayor,
 body.temaClaro .pistaMenor {
   background-color: #dcdcf0;
-}
-.contenidoModalHistorial {
-  max-width: 40rem;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-#ordenamientoHistorial {
-  display: flex;
-  gap: 1rem;
-}
-#ordenamientoHistorial button {
-  padding: 0.4rem 0.8rem;
-  border: 0.0625rem solid #4caf50;
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
-  color:  #1e1e2f;
-}
-#listaHistorial {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 0.5rem;
-}
-.filaHistorial {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem;
-  border-radius: 0.4rem;
-  background-color: #1e1e2f;
-  font-size: 0.85rem;
 }
 body.temaClaro #ordenamientoHistorial button {
   border-color: #2e7d32;
@@ -316,64 +374,6 @@ body.temaClaro .filaHistorial {
 body.temaClaro #botonVerHistorial {
   border-color: #2e7d32;
   color: #1e1e2f;
-}
-#selectorDificultad {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 0.4rem;
-  text-align: left;
-}
-#selectDificultad {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: #1e1e2f;
-  font-size: 1rem;
-  color: #f2f2f2;
-}
-body.temaClaro #selectDificultad {
-  background-color: #ffffff;
-  color: #1e1e2f;
-}
-#seccionPistaFacil {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-#fotoJugadorSecreto {
-  width: 8rem;
-  border-radius: 0.5rem;
-}
-.blurNivel0 {
-  filter: blur(0rem);
-}
-.blurNivel1 {
-  filter: blur(0.3rem);
-}
-.blurNivel2 {
-  filter: blur(0.6rem);
-}
-.blurNivel3 {
-  filter: blur(0.9rem);
-}
-.blurNivel4 {
-  filter: blur(1.2rem);
-}
-.blurNivel5 {
-  filter: blur(1.5rem);
-}
-.blurNivel6 {
-  filter: blur(1.8rem);
-}
-.blurNivel7 {
-  filter: blur(2.1rem);
-}
-#seccionPistaMedio {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  width: 100%;
-  font-size: 0.95rem;
 }
 @media (max-width: 37.5rem) {
   #encabezadoPrincipal h1 {
